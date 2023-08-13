@@ -1,10 +1,10 @@
 import React, { Fragment, ReactElement } from "react";
 import Link from "next/link";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { IPostResponse } from "@/pages/types";
 import { API_ENDPOINT_POST } from "@/constants";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { IPostResponse } from "@/types";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch(`${API_ENDPOINT_POST}`);
@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return { props: { data } };
 };
 
-function IndexPage({
+function Page({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>): ReactElement {
   const router = useRouter();
@@ -48,4 +48,4 @@ function IndexPage({
   );
 }
 
-export default IndexPage;
+export default Page;
