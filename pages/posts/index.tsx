@@ -5,6 +5,10 @@ import { API_ENDPOINT_POST } from "@/constants";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { IPostResponse } from "@/types";
+import { Button, Col, List, Row, Typography, Space } from "antd";
+import { LikeOutlined } from "@ant-design/icons";
+
+const { Paragraph } = Typography;
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch(`${API_ENDPOINT_POST}`);
@@ -13,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 function Page({
-  data,
+  data: fetchedData,
 }: InferGetServerSidePropsType<typeof getServerSideProps>): ReactElement {
   const router = useRouter();
   const handleClickDelete = async (id) => {
@@ -27,23 +31,59 @@ function Page({
         router.reload();
       });
   };
+
+  const data = fetchedData.sort((a, b) => b.id - a.id);
   return (
     <Fragment>
       <Head>
         <title>Post Page</title>
       </Head>
-      <Link href="/posts/new">글 작성하기</Link>
-      <ul>
-        {data.map((post) => {
-          return (
-            <li key={post.id}>
-              <Link href={`/posts/${post.id}`}>{post.title}</Link>
-              <Link href={`/posts/${post.id}/edit`}>수정</Link>
-              <button onClick={() => handleClickDelete(post.id)}>삭제</button>
-            </li>
-          );
-        })}
-      </ul>
+      <Row justify="end">
+        <Col>
+          <Button type="primary" htmlType="a" href="/posts/new">
+            글쓰기
+          </Button>
+        </Col>
+      </Row>
+
+      <List
+        pagination={{
+          position: "bottom",
+          align: "center",
+          pageSize: 5,
+        }}
+        itemLayout="horizontal"
+        dataSource={data}
+        renderItem={(item) => (
+          <List.Item
+            actions={[
+              <Link href={`/posts/${item.id}/edit`} key="list-loadmore-edit">
+                수정
+              </Link>,
+              <Button
+                type="link"
+                style={{ padding: 0 }}
+                onClick={() => handleClickDelete(item.id)}
+              >
+                삭제
+              </Button>,
+            ]}
+          >
+            <List.Item.Meta
+              title={<Link href={`/posts/${item.id}`}>{item.title}</Link>}
+              description={
+                <Paragraph style={{ maxWidth: "90%" }} ellipsis={true}>
+                  {item.body}
+                </Paragraph>
+              }
+            />
+            <Space>
+              <LikeOutlined />
+              {item.reactions}
+            </Space>
+          </List.Item>
+        )}
+      />
     </Fragment>
   );
 }

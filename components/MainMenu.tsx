@@ -1,10 +1,5 @@
 import React, { ReactElement } from "react";
 import { Menu } from "antd";
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
 import { useRouter } from "next/router";
 
 function MainMenu(): ReactElement {
@@ -17,7 +12,6 @@ function MainMenu(): ReactElement {
       items={[
         {
           key: "1",
-          icon: <UserOutlined />,
           label: "Home",
           onClick: () => {
             route.push("/");
@@ -25,7 +19,6 @@ function MainMenu(): ReactElement {
         },
         {
           key: "2",
-          icon: <VideoCameraOutlined />,
           label: "About",
           onClick: () => {
             route.push("/about");
@@ -33,7 +26,6 @@ function MainMenu(): ReactElement {
         },
         {
           key: "3",
-          icon: <UploadOutlined />,
           label: "Posts",
           onClick: () => {
             route.push("/posts");
@@ -41,7 +33,6 @@ function MainMenu(): ReactElement {
         },
         {
           key: "4",
-          icon: <UploadOutlined />,
           label: "Todos",
           onClick: () => {
             route.push("/todos");
@@ -49,7 +40,6 @@ function MainMenu(): ReactElement {
         },
         {
           key: "5",
-          icon: <UploadOutlined />,
           label: "Modal",
           // onClick: () => {
           //   return route.push("/modals");

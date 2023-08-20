@@ -11,27 +11,31 @@ function MainLayout({ children }): ReactElement {
   } = theme.useToken();
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout
+      style={{
+        minHeight: "100vh",
+      }}
+      hasSider
+    >
       <Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
+        style={{
+          overflow: "auto",
+          height: "100vh",
+          position: "fixed",
+          left: 0,
+          top: 0,
+          bottom: 0,
         }}
       >
         <div className="demo-logo-vertical" />
         <MainMenu />
       </Sider>
-      <Layout>
+      <Layout className="site-layout" style={{ marginLeft: 200 }}>
         <Header style={{ padding: 0, background: colorBgContainer }} />
-        <Content style={{ margin: "24px 16px 0" }}>
+        <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
           <div
             style={{
               padding: 24,
-              minHeight: 360,
               background: colorBgContainer,
             }}
           >
