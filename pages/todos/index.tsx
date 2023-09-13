@@ -1,22 +1,11 @@
 "use client";
-import React, { ReactElement, useEffect, useState } from "react";
-import { API_ENDPOINT_TODO } from "@/constants";
-import { ITodo } from "@/types";
+import React, { ReactElement } from "react";
+import { useTodos } from "@/hooks/api/useTodos";
 
 interface PageProps {}
 
 function Page(): ReactElement {
-  const [data, setData] = useState<ITodo[]>(null);
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch(`${API_ENDPOINT_TODO}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
-  }, []);
+  const { data, isError, isLoading } = useTodos();
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No todos data</p>;

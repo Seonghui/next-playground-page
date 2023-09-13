@@ -4,6 +4,7 @@ import { Modal } from "antd";
 
 function Page(): ReactElement {
   const { isOpen, handleOpenModal, handleCloseModal } = useQueryModal("test");
+
   return (
     <div>
       <button onClick={() => handleOpenModal()}>query 모달 열기</button>

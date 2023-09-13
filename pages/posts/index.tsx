@@ -5,8 +5,9 @@ import { API_ENDPOINT_POST } from "@/constants";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { IPostResponse } from "@/types";
-import { Button, Col, List, Row, Typography, Space } from "antd";
+import { Button, Col, List, Row, Typography, Space, Modal } from "antd";
 import { LikeOutlined } from "@ant-design/icons";
+import useQueryModal from "@/hooks/useQueryModal";
 
 const { Paragraph } = Typography;
 
@@ -19,6 +20,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
 function Page({
   data: fetchedData,
 }: InferGetServerSidePropsType<typeof getServerSideProps>): ReactElement {
+  const { handleCloseModal, handleOpenModal, isOpen } =
+    useQueryModal("delete-post");
+
   const router = useRouter();
   const handleClickDelete = async (id) => {
     await fetch(`${API_ENDPOINT_POST}/${id}`, {
@@ -63,7 +67,8 @@ function Page({
               <Button
                 type="link"
                 style={{ padding: 0 }}
-                onClick={() => handleClickDelete(item.id)}
+                // onClick={() => handleClickDelete(item.id)}
+                onClick={() => handleOpenModal()}
               >
                 삭제
               </Button>,
@@ -84,6 +89,15 @@ function Page({
           </List.Item>
         )}
       />
+      <Modal
+        title={"알람"}
+        centered
+        open={isOpen}
+        onOk={() => handleClickDelete(item.id)}
+        onCancel={() => handleCloseModal()}
+      >
+        정말 삭제하시겠습니까?
+      </Modal>
     </Fragment>
   );
 }

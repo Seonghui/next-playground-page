@@ -1,7 +1,11 @@
 import React, { ReactElement } from "react";
-import { IPost } from "@/pages/types";
+import { IPost } from "@/types";
 import { API_ENDPOINT_POST } from "@/constants";
 import PostHead from "@/components/PostHead";
+import { Col, Divider, Row, Space, Typography } from "antd";
+import { LikeOutlined } from "@ant-design/icons";
+
+const { Title, Text } = Typography;
 
 export const getServerSideProps: ({
   params,
@@ -13,7 +17,6 @@ export const getServerSideProps: ({
   const res = await fetch(`${API_ENDPOINT_POST}/${params.id}`);
 
   const post = await res.json();
-  console.log(res.status);
 
   if (res.status === 404) {
     return {
@@ -33,8 +36,20 @@ function Page({ post }): ReactElement {
     <>
       <PostHead title={post.title} />
       <div>
-        <div>{post.title}</div>
-        <div>{post.body}</div>
+        <Title level={2}>{post.title}</Title>
+        <Row justify="end">
+          <Col>
+            <Space split={<span>&#183;</span>}>
+              <Space>
+                <LikeOutlined />
+                {post.reactions}
+              </Space>
+              <Text>{post.userName}</Text>
+            </Space>
+          </Col>
+        </Row>
+        <Divider />
+        <Text>{post.body}</Text>
       </div>
     </>
   );
