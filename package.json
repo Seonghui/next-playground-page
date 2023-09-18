@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.16.2",
+    "@tanstack/react-query": "^4.35.3",
+    "@tanstack/react-query-devtools": "^4.35.3",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
@@ -35,5 +37,6 @@
   },
   "msw": {
     "workerDirectory": "public"
-  }
+  },
+  "proxy": "http://localhost:8080"
 }

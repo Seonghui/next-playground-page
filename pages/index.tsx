@@ -1,7 +1,6 @@
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 import { Button, Card, Space } from "antd";
-import SwrProvider from "@/pages/SwrProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
