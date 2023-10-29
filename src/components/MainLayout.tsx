@@ -16,18 +16,18 @@ function MainLayout({ children }): ReactElement {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const { data, refetch } = useUserMe({ enabled: false });
-  const router = useRouter();
-
-  const handleClickLogout = async () => {
-    removeAccessToken();
-    await refetch();
-    await router.push("/");
-  };
-
-  useEffect(() => {
-    refetch();
-  }, []);
+  // const { data, refetch } = useUserMe({ enabled: false });
+  // const router = useRouter();
+  //
+  // const handleClickLogout = async () => {
+  //   removeAccessToken();
+  //   await refetch();
+  //   await router.push("/");
+  // };
+  //
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
 
   return (
     <Layout
@@ -61,13 +61,13 @@ function MainLayout({ children }): ReactElement {
               <Space>
                 <span>서브메뉴1</span>
                 <span>서브메뉴2</span>
-                {data ? (
-                  <Button type="text" onClick={handleClickLogout}>
-                    로그아웃
-                  </Button>
-                ) : (
-                  <Link href="/login">로그인</Link>
-                )}
+                {/*{data ? (*/}
+                {/*  <Button type="text" onClick={handleClickLogout}>*/}
+                {/*    로그아웃*/}
+                {/*  </Button>*/}
+                {/*) : (*/}
+                {/*  <Link href="/login">로그인</Link>*/}
+                {/*)}*/}
               </Space>
             </Col>
           </Row>
