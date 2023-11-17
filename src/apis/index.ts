@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_ENDPOINT_LOCAL_SERVER } from "@/constants";
-import { getAccessToken } from "@/utilities/tokenHelper";
+import { getAccessToken } from "@/utils/tokenHelper";
 
 // Create an Axios instance
 const api = axios.create({
@@ -8,20 +8,20 @@ const api = axios.create({
 });
 
 // Request interceptor
-api.interceptors.request.use(
-  (config) => {
-    const token = getAccessToken();
-    console.log({ token });
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    // Handle request error
-    return Promise.reject(error);
-  }
-);
+// api.interceptors.request.use(
+//   (config) => {
+//     const token = getAccessToken();
+//     console.log({ token });
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     // Handle request error
+//     return Promise.reject(error);
+//   },
+// );
 
 // Response interceptor
 api.interceptors.response.use(
@@ -33,7 +33,7 @@ api.interceptors.response.use(
   (error) => {
     // Handle response error
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

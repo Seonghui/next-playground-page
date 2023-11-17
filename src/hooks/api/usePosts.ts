@@ -11,7 +11,6 @@ export function usePosts() {
     queryKey: ["todos"],
     queryFn: fetcher,
   });
-  console.log("hello?");
 
   return {
     data,

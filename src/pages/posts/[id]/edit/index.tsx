@@ -1,44 +1,38 @@
 import React, { ReactElement } from "react";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import { API_ENDPOINT_POST } from "@/constants";
 import { IPost, IPostForm } from "@/types";
-import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { Button, Form, Input } from "antd";
+const { TextArea } = Input;
 
-export const getStaticPaths: GetStaticPaths<{ id: string }> = async () => {
+export const getStaticPaths = (async () => {
   const res = await fetch(`${API_ENDPOINT_POST}`);
-  const result = await res.json();
-
-  const paths = result.map((post) => ({
+  const posts = await res.json();
+  const paths = posts.map((post: IPost) => ({
     params: { id: post.id.toString() },
   }));
-
-  return { paths, fallback: false };
-};
-
-export const getStaticProps: GetStaticProps<{ post: IPost }> = async ({
-  params,
-}) => {
-  const res = await fetch(`${API_ENDPOINT_POST}/${params.id}`);
-  const post = await res.json();
   return {
-    props: {
-      post,
-    },
+    paths: paths,
+    fallback: true,
   };
-};
+}) satisfies GetStaticPaths;
+export const getStaticProps = (async (context) => {
+  const { params } = context;
+  const res = await fetch(`${API_ENDPOINT_POST}/${params?.id}`);
+  const post = await res.json();
+  return { props: { post } };
+}) satisfies GetStaticProps<{
+  post: IPost;
+}>;
 
-function Page({ post }): ReactElement {
+function Page({
+  post,
+}: InferGetStaticPropsType<typeof getStaticProps>): ReactElement {
   const router = useRouter();
   const { id } = router.query;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IPostForm>();
-
-  const onSubmit = handleSubmit(async (data) => {
+  const onFinish = async (data: IPostForm) => {
     await fetch(`${API_ENDPOINT_POST}/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -52,18 +46,32 @@ function Page({ post }): ReactElement {
         console.log(res);
         router.push("/posts");
       });
-  });
+  };
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <label>title: </label>
-        <input defaultValue={post.title} type="text" {...register("title")} />
-        <label htmlFor="body">body:</label>
-        <textarea defaultValue={post.body} {...register("body")} />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <Form name="post-new" onFinish={onFinish} layout="vertical">
+      <Form.Item
+        label="제목"
+        name="title"
+        rules={[{ required: true, message: "제목을 입력해 주세요." }]}
+        initialValue={post.title}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="내용"
+        name="body"
+        rules={[{ required: true, message: "내용을 입력해 주세요." }]}
+        initialValue={post.body}
+      >
+        <TextArea rows={4} />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          등록
+        </Button>
+      </Form.Item>
+    </Form>
   );
 }
 

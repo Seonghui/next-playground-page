@@ -4,9 +4,9 @@ import MainMenu from "@/components/MainMenu";
 import MainFooter from "@/components/MainFooter";
 import Link from "next/link";
 import { useUserMe } from "@/hooks/api/useUserMe";
-import { removeAccessToken } from "@/utilities/tokenHelper";
 import { useRouter } from "next/router";
 import { useQueryClient } from "@tanstack/react-query";
+import { removeAccessToken } from "@/utils/tokenHelper";
 
 const { Header, Content, Sider } = Layout;
 
@@ -17,17 +17,17 @@ function MainLayout({ children }): ReactElement {
   } = theme.useToken();
 
   // const { data, refetch } = useUserMe({ enabled: false });
-  // const router = useRouter();
-  //
+  const router = useRouter();
+
   // const handleClickLogout = async () => {
   //   removeAccessToken();
   //   await refetch();
   //   await router.push("/");
   // };
-  //
+
   // useEffect(() => {
   //   refetch();
-  // }, []);
+  // }, [refetch]);
 
   return (
     <Layout

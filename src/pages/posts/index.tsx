@@ -3,11 +3,8 @@ import Link from "next/link";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { API_ENDPOINT_POST } from "@/constants";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { IPostResponse } from "@/types";
-import { Button, Col, List, Row, Typography, Space, Modal } from "antd";
-import { LikeOutlined } from "@ant-design/icons";
-import useQueryModal from "@/hooks/useQueryModal";
+import { IPost, IPostResponse } from "@/types";
+import { Button, Col, List, Row, Typography } from "antd";
 
 const { Paragraph } = Typography;
 
@@ -20,23 +17,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 function Page({
   data: fetchedData,
 }: InferGetServerSidePropsType<typeof getServerSideProps>): ReactElement {
-  const { handleCloseModal, handleOpenModal, isOpen } =
-    useQueryModal("delete-post");
-
-  const router = useRouter();
-  const handleClickDelete = async (id) => {
-    await fetch(`${API_ENDPOINT_POST}/${id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        router.reload();
-      });
-  };
-
-  const data = fetchedData.sort((a, b) => b.id - a.id);
+  const data: IPost[] = fetchedData.sort((a: IPost, b: IPost) => b.id - a.id);
   return (
     <Fragment>
       <Head>
@@ -44,7 +25,7 @@ function Page({
       </Head>
       <Row justify="end">
         <Col>
-          <Button type="primary" htmlType="a" href="/posts/new">
+          <Button type="primary" href="/posts/new">
             글쓰기
           </Button>
         </Col>
@@ -59,21 +40,7 @@ function Page({
         itemLayout="horizontal"
         dataSource={data}
         renderItem={(item) => (
-          <List.Item
-            actions={[
-              <Link href={`/posts/${item.id}/edit`} key="list-loadmore-edit">
-                수정
-              </Link>,
-              <Button
-                type="link"
-                style={{ padding: 0 }}
-                // onClick={() => handleClickDelete(item.id)}
-                onClick={() => handleOpenModal()}
-              >
-                삭제
-              </Button>,
-            ]}
-          >
+          <List.Item actions={[]}>
             <List.Item.Meta
               title={<Link href={`/posts/${item.id}`}>{item.title}</Link>}
               description={
@@ -82,22 +49,9 @@ function Page({
                 </Paragraph>
               }
             />
-            <Space>
-              <LikeOutlined />
-              {item.reactions}
-            </Space>
           </List.Item>
         )}
       />
-      <Modal
-        title={"알람"}
-        centered
-        open={isOpen}
-        onOk={() => handleClickDelete(item.id)}
-        onCancel={() => handleCloseModal()}
-      >
-        정말 삭제하시겠습니까?
-      </Modal>
     </Fragment>
   );
 }

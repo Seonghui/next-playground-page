@@ -10,6 +10,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createGlobalStyle } from "styled-components";
 import Head from "next/head";
+import NiceModal from "@ebay/nice-modal-react";
 
 // 글로벌 스타일
 const GlobalStyle = createGlobalStyle`
@@ -58,14 +59,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <meta property="og:type" content="website" />
       </Head>
       <QueryClientProvider client={queryClient}>
-        {/*@TODO Prod일때 제거*/}
-        <ReactQueryDevtools initialIsOpen={false} />
-        <Hydrate state={pageProps.dehydratedState}>
-          <GlobalStyle />
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
-        </Hydrate>
+        <NiceModal.Provider>
+          {/*@TODO Prod일때 제거*/}
+          <ReactQueryDevtools initialIsOpen={false} />
+          <Hydrate state={pageProps.dehydratedState}>
+            <GlobalStyle />
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </Hydrate>
+        </NiceModal.Provider>
       </QueryClientProvider>
     </>
   );

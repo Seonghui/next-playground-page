@@ -1,48 +1,49 @@
-import React, { FormEvent, ReactElement } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { IPostForm } from "@/pages/types";
+import React, { ReactElement } from "react";
 import { API_ENDPOINT_POST } from "@/constants";
 import { useRouter } from "next/router";
-
-interface PageProps {}
+import { IPostForm } from "@/types";
+import { Button, Form, Input } from "antd";
+const { TextArea } = Input;
 
 function Page(): ReactElement {
   const router = useRouter();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IPostForm>();
-
-  const onSubmit = handleSubmit(async (data) => {
+  const onFinish = async (data: IPostForm) => {
     await fetch(`${API_ENDPOINT_POST}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title: data.title,
         body: data.body,
-        userId: data.userId,
-        /* other post data */
       }),
     })
       .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         router.push("/posts");
       });
-  });
+  };
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <label>title: </label>
-        <input type="text" {...register("title")} />
-        <label htmlFor="body">body:</label>
-        <textarea {...register("body")} />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <Form name="post-new" onFinish={onFinish} layout="vertical">
+      <Form.Item
+        label="제목"
+        name="title"
+        rules={[{ required: true, message: "제목을 입력해 주세요." }]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="내용"
+        name="body"
+        rules={[{ required: true, message: "내용을 입력해 주세요." }]}
+      >
+        <TextArea rows={4} />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          등록
+        </Button>
+      </Form.Item>
+    </Form>
   );
 }
 

@@ -1,16 +1,30 @@
 import Head from "next/head";
 import { useCounter } from "@/hooks/useCounter";
 import { usePosts } from "@/hooks/api/usePosts";
+import Confirm from "@/components/organisms/Confirm";
+import { useModal } from "@ebay/nice-modal-react";
+import { useCallback } from "react";
 
 function Index() {
   const { counter, increment, decrement, incrementByAmount } = useCounter();
   const { data } = usePosts();
+
+  const confirmModal = useModal(Confirm);
+  const handlerUseConfirm = useCallback(async () => {
+    const result = await confirmModal.show({
+      title: "알람",
+      message: "Use Confirm!!!!",
+      onConfirm: () => {
+        console.log("confirmed!!");
+      },
+    });
+
+    console.log("confirm result :>> ", result);
+  }, [confirmModal]);
+
   const getRandom = async () => {
     const res = await fetch("/random").then((res) => res.json());
-    console.log(res.data);
   };
-
-  console.log(data);
 
   return (
     <>
@@ -20,6 +34,7 @@ function Index() {
         <title key="about">About Page</title>
       </Head>
       <button onClick={getRandom}>랜덤데이터 불러오기</button>
+      <button onClick={handlerUseConfirm}>Confirm</button>
       <div>
         Counter: {counter.value}
         <br />

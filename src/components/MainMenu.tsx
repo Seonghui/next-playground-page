@@ -19,9 +19,9 @@ function MainMenu(): ReactElement {
         },
         {
           key: "2",
-          label: "About",
+          label: "sandbox",
           onClick: () => {
-            route.push("/about");
+            route.push("/sandbox");
           },
         },
         {

@@ -28,3 +28,12 @@ export interface ITodo {
   completed: boolean;
   userId: number;
 }
+
+export interface ILoginVariables {
+  email: string;
+  password: string;
+}
+
+export interface ILoginResponse {
+  token: string;
+}

@@ -2,10 +2,10 @@ import React, { Fragment, ReactElement } from "react";
 import { Alert, Button, Form, Input } from "antd";
 import { useRouter } from "next/router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ILoginVariables } from "@/types/users";
 import api from "@/apis";
-import { setAccessToken } from "@/utilities/tokenHelper";
-// import { useUserMe } from "@/hooks/api/useUserMe";
+import { useUserMe } from "@/hooks/api/useUserMe";
+import { setAccessToken } from "@/utils/tokenHelper";
+import { ILoginVariables } from "@/types";
 
 type FieldType = {
   username?: string;
@@ -43,7 +43,7 @@ function Page(): ReactElement {
   return (
     <Fragment>
       <Form
-        name="basic"
+        name="login"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         style={{ maxWidth: 600 }}
