@@ -1,11 +1,13 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { API_ENDPOINT_POST } from "@/constants";
 import { useRouter } from "next/router";
 import { IPostForm } from "@/types";
 import { Button, Form, Input } from "antd";
+import Editor from "@/components/organisms/Editor";
 const { TextArea } = Input;
 
 function Page(): ReactElement {
+  const [body, setBody] = useState("");
   const router = useRouter();
   const onFinish = async (data: IPostForm) => {
     await fetch(`${API_ENDPOINT_POST}`, {
@@ -13,7 +15,7 @@ function Page(): ReactElement {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title: data.title,
-        body: data.body,
+        body: body,
       }),
     })
       .then((res) => res.json())
@@ -31,13 +33,14 @@ function Page(): ReactElement {
       >
         <Input />
       </Form.Item>
-      <Form.Item
+      <Editor onChange={(value) => setBody(value)} />
+      {/* <Form.Item
         label="내용"
         name="body"
         rules={[{ required: true, message: "내용을 입력해 주세요." }]}
       >
         <TextArea rows={4} />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item>
         <Button type="primary" htmlType="submit">
           등록

@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useModal } from "@ebay/nice-modal-react";
 import Confirm from "@/components/organisms/Confirm";
+import SanitizeHtml from "@/components/commons/SanitizeHtml";
 
 const { Title, Text } = Typography;
 
@@ -80,7 +81,8 @@ function Page({
           </Col>
         </Row>
         <Divider />
-        <Text>{post.body}</Text>
+        <SanitizeHtml dirty={post.body} />
+        {/* <Text>{post.body}</Text> */}
       </div>
       {/*    TODO 삭제 모달 구현*/}
     </>

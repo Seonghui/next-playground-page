@@ -4,6 +4,8 @@ import { usePosts } from "@/hooks/api/usePosts";
 import Confirm from "@/components/organisms/Confirm";
 import { useModal } from "@ebay/nice-modal-react";
 import { useCallback } from "react";
+import Editor from "@/components/organisms/Editor";
+import SanitizeHtml from "@/components/commons/SanitizeHtml";
 
 function Index() {
   const { counter, increment, decrement, incrementByAmount } = useCounter();
@@ -29,10 +31,11 @@ function Index() {
   return (
     <>
       <Head>
-        <title key="about">About Page</title>
-        <title key="about">About Page</title>
-        <title key="about">About Page</title>
+        <title key="about">Sandbox Page</title>
       </Head>
+      <Editor onChange={(value) => console.log(value)} />
+
+      <SanitizeHtml dirty="sdsdsd" />
       <button onClick={getRandom}>랜덤데이터 불러오기</button>
       <button onClick={handlerUseConfirm}>Confirm</button>
       <div>
